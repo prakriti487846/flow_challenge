@@ -5,7 +5,7 @@ pub fun main(account: Address): &NonFungibleToken.NFT {
 
   let publicRefrence = getAccount(account).getCapability(/public/Collection) 
                           .borrow<&CryptoPoops.Collection{CryptoPoops.PublicCollection}>() 
-                          ?? panic("Collection is Absent")
+                          ?? panic("Collection NOT Present")
                           
   let NFTId = publicRefrence.getIDs()
   return publicRefrence.borrowAuthNFT(id: NFTId[0])
