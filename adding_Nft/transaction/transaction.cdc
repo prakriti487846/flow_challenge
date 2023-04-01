@@ -1,19 +1,10 @@
 import CryptoPoops from 0x01
 import NonFungibleToken from 0x02
 
-transaction(recipient: Address, name: String, favouriteFood: String, luckyNumber: Int) {
+transaction() {
 
   prepare(acct: AuthAccount) {
-    let nftMinter = acct.borrow<&CryptoPoops.Minter>(from: /storage/Minter) ?? panic("nft minter Missing")
-
-    let publicRefrence = getAccount(recipient).getCapability(/public/Collection) 
-                          .borrow<&CryptoPoops.Collection{NonFungibleToken.CollectionPublic}>() 
-                          ?? panic("Collection is Missing")
-
-    publicRefrence.deposit(token: <-nftMinter.createNFT(name: name, favouriteFood: favouriteFood, luckyNumber: luckyNumber))
-  }
-
-  execute {
-    log("Huraayy!!! Nft Minted")
+    acct.save(<-CryptoPoops.createEmptyCollection(), to: /storage/Collection )
+    acct.link<&CryptoPoops.Collection{NonFungibleToken.CollectionPublic, CryptoPoops.PublicCollection }>(/public/Collection, target: /storage/Collection )
   }
 }
