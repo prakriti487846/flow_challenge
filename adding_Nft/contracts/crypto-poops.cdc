@@ -34,7 +34,7 @@ pub contract CryptoPoops: NonFungibleToken {
 
     pub fun withdraw(withdrawID: UInt64): @NonFungibleToken.NFT {
       let nft <- self.ownedNFTs.remove(key: withdrawID) 
-            ?? panic("This NFT does not exist in this Collection.")
+            ?? panic("This NFT is not existing.")
       emit Withdraw(id: nft.id, from: self.owner?.address)
       return <- nft
     }
@@ -54,7 +54,7 @@ pub contract CryptoPoops: NonFungibleToken {
     }
 
     pub fun borrowAuthNFT(id: UInt64): &NFT {
-        let refNFT = (&self.ownedNFTs[id] as auth &NonFungibleToken.NFT?) ?? panic("Problem in the contract")
+        let refNFT = (&self.ownedNFTs[id] as auth &NonFungibleToken.NFT?) ?? panic("there is some problem in the contract ")
         return refNFT as! &NFT
     }
 
